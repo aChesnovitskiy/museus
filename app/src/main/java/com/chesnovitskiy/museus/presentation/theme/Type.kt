@@ -1,4 +1,4 @@
-package com.chesnovitskiy.museus.ui.theme
+package com.chesnovitskiy.museus.presentation.theme
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle
