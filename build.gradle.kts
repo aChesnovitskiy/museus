@@ -2,6 +2,7 @@
 buildscript {
     val compose_version by extra("1.0.0-beta07")
     val accompanist_version by extra("0.10.0")
+    val room_version by extra("2.3.0")
     repositories {
         google()
         mavenCentral()
@@ -9,6 +10,7 @@ buildscript {
     dependencies {
         classpath("com.android.tools.build:gradle:7.0.0-beta03")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.32")
+        classpath ("org.jetbrains.kotlin:kotlin-serialization:1.4.32")
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle.kts files

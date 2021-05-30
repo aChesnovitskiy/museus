@@ -1,6 +1,8 @@
 plugins {
     id("com.android.application")
     id("kotlin-android")
+    kotlin("kapt")
+    kotlin("plugin.serialization")
 }
 
 android {
@@ -61,6 +63,14 @@ dependencies {
 
     // Coil
     implementation("com.google.accompanist:accompanist-coil:${rootProject.extra["accompanist_version"]}")
+
+    // Room
+    implementation("androidx.room:room-runtime:${rootProject.extra["room_version"]}")
+    kapt("androidx.room:room-compiler:${rootProject.extra["room_version"]}")
+    implementation("androidx.room:room-ktx:${rootProject.extra["room_version"]}")
+
+    // Kotlin serialization
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.1")
 
     testImplementation("junit:junit:4.13.2")
 

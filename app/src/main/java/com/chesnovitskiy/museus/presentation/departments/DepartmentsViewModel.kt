@@ -9,7 +9,6 @@ import com.chesnovitskiy.museus.presentation.base.BaseViewModel
 import com.chesnovitskiy.museus.presentation.base.BaseViewState
 import com.chesnovitskiy.museus.presentation.departments.model.UiDepartment
 import com.chesnovitskiy.museus.presentation.departments.model.toUiDepartment
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
@@ -17,20 +16,17 @@ class DepartmentsViewModel(departmentsUseCase: DepartmentsUseCase) :
     BaseViewModel<DepartmentsViewState>(DepartmentsViewState()) {
 
     init {
-        updateState { it.copy(isLoading = true) }
+        updateState { it.copy(isUpdating = true) }
         viewModelScope.launch {
             departmentsUseCase.updateDepartments()
+            updateState { it.copy(isUpdating = false) }
         }
         viewModelScope.launch {
-            delay(2000)
             departmentsUseCase
                 .departmentsFlow
                 .collect { departments: List<Department> ->
                     updateState { state ->
-                        state.copy(
-                            departments = departments.map { it.toUiDepartment() },
-                            isLoading = false
-                        )
+                        state.copy(departments = departments.map { it.toUiDepartment() })
                     }
                 }
         }
@@ -52,5 +48,5 @@ class DepartmentsViewModelFactory(
 
 data class DepartmentsViewState(
     val departments: List<UiDepartment> = emptyList(),
-    val isLoading: Boolean = false
+    val isUpdating: Boolean = false
 ) : BaseViewState
