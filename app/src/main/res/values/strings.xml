@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">museus</string>
+
+    <string name="app_name">Museus</string>
+
+    <string name="objects_d" formatted="true">Objects: %d</string>
+
 </resources>

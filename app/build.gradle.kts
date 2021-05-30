@@ -59,6 +59,9 @@ dependencies {
     implementation("androidx.compose.material:material:${rootProject.extra["compose_version"]}")
     implementation("androidx.compose.ui:ui-tooling:${rootProject.extra["compose_version"]}")
 
+    // Coil
+    implementation("com.google.accompanist:accompanist-coil:${rootProject.extra["accompanist_version"]}")
+
     testImplementation("junit:junit:4.13.2")
 
     androidTestImplementation("androidx.test.ext:junit:1.1.2")

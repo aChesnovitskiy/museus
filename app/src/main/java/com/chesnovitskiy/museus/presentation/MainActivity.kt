@@ -3,36 +3,77 @@ package com.chesnovitskiy.museus.presentation
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.foundation.ExperimentalFoundationApi
+import com.chesnovitskiy.museus.domain.departments.model.Department
+import com.chesnovitskiy.museus.presentation.departments.DepartmentsScreen
 import com.chesnovitskiy.museus.presentation.theme.MuseusTheme
 
 class MainActivity : ComponentActivity() {
+
+    @ExperimentalFoundationApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             MuseusTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(color = MaterialTheme.colors.background) {
-                    Greeting("Android")
-                }
+                DepartmentsScreen(
+                    listOf(
+                        Department(
+                            id = 1,
+                            name = "Medieval Art",
+                            totalObjects = 2,
+                            objectIds = listOf(1, 2),
+                        ),
+                        Department(
+                            id = 2,
+                            name = "Russian Art",
+                            totalObjects = 2,
+                            objectIds = listOf(3, 4),
+                        ),
+                        Department(
+                            id = 3,
+                            name = "Modern Art",
+                            totalObjects = 5,
+                            objectIds = listOf(3, 4),
+                        ),
+                        Department(
+                            id = 3,
+                            name = "Modern Art",
+                            totalObjects = 5,
+                            objectIds = listOf(3, 4),
+                        ),
+                        Department(
+                            id = 3,
+                            name = "Modern Art",
+                            totalObjects = 5,
+                            objectIds = listOf(3, 4),
+                        ),
+                        Department(
+                            id = 3,
+                            name = "Modern Art",
+                            totalObjects = 5,
+                            objectIds = listOf(3, 4),
+                        ),
+                        Department(
+                            id = 3,
+                            name = "Modern Art",
+                            totalObjects = 5,
+                            objectIds = listOf(3, 4),
+                        ),
+                        Department(
+                            id = 3,
+                            name = "Modern Art",
+                            totalObjects = 5,
+                            objectIds = listOf(3, 4),
+                        ),
+                        Department(
+                            id = 3,
+                            name = "Modern Art",
+                            totalObjects = 5,
+                            objectIds = listOf(3, 4),
+                        ),
+                    )
+                )
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    MuseusTheme {
-        Greeting("Android")
     }
 }
