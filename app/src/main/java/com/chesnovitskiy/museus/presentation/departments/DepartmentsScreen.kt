@@ -7,45 +7,71 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.flowWithLifecycle
 import com.chesnovitskiy.museus.R
-import com.chesnovitskiy.museus.domain.departments.model.Department
+import com.chesnovitskiy.museus.presentation.departments.model.UiDepartment
 import com.chesnovitskiy.museus.presentation.theme.MuseusTheme
 import com.google.accompanist.coil.rememberCoilPainter
 
 @ExperimentalFoundationApi
 @Composable
 fun DepartmentsScreen(
-    departments: List<Department>,
+    viewModel: DepartmentsViewModel,
     modifier: Modifier = Modifier
 ) {
-    LazyVerticalGrid(
-        cells = GridCells.Fixed(2),
-        modifier = modifier,
-        contentPadding = PaddingValues(12.dp)
-    ) {
-        items(departments) { department ->
-            DepartmentCard(
-                department = department,
-                onClick = {},
-                modifier = modifier.padding(4.dp)
-            )
+    val lifecycleOwner = LocalLifecycleOwner.current
+    val stateFlowLifecycleAware = remember(viewModel.viewStateFlow, lifecycleOwner) {
+        viewModel
+            .viewStateFlow
+            .flowWithLifecycle(lifecycleOwner.lifecycle, Lifecycle.State.STARTED)
+    }
+    val state: DepartmentsViewState by stateFlowLifecycleAware.collectAsState(DepartmentsViewState())
+
+    Scaffold { paddingValues ->
+        if (state.isLoading && state.departments.isEmpty()) {
+            Box(
+                modifier = modifier
+                    .padding(paddingValues)
+                    .fillMaxSize()
+                ,
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
+            }
+        }
+
+        LazyVerticalGrid(
+            cells = GridCells.Fixed(2),
+            modifier = modifier.padding(paddingValues),
+            contentPadding = PaddingValues(12.dp)
+        ) {
+            items(state.departments) { department ->
+                DepartmentCard(
+                    department = department,
+                    onClick = {},
+                    modifier = modifier.padding(4.dp)
+                )
+            }
         }
     }
 }
 
 @Composable
 fun DepartmentCard(
-    department: Department,
-    imageUrl: String = "https://images.metmuseum.org/CRDImages/as/web-large/DP251139.jpg",
+    department: UiDepartment,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -56,7 +82,7 @@ fun DepartmentCard(
                 .padding(8.dp)
         ) {
             Image(
-                painter = rememberCoilPainter(imageUrl),
+                painter = rememberCoilPainter(department.imageUrl),
                 contentDescription = null,
                 modifier = Modifier
                     .height(200.dp)
@@ -66,6 +92,8 @@ fun DepartmentCard(
             Spacer(Modifier.height(8.dp))
             Text(
                 text = department.name,
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 1,
                 style = MaterialTheme.typography.subtitle2
             )
             Text(
@@ -76,48 +104,48 @@ fun DepartmentCard(
     }
 }
 
-@ExperimentalFoundationApi
-@Preview(showBackground = true)
-@Composable
-fun DepartmentsScreenPreview() {
-    MuseusTheme {
-        DepartmentsScreen(
-            listOf(
-                Department(
-                    id = 1,
-                    name = "Medieval Art",
-                    totalObjects = 2,
-                    objectIds = listOf(1, 2),
-                ),
-                Department(
-                    id = 2,
-                    name = "Russian Art",
-                    totalObjects = 2,
-                    objectIds = listOf(3, 4),
-                ),
-                Department(
-                    id = 3,
-                    name = "Modern Art Art Art Art Art",
-                    totalObjects = 5,
-                    objectIds = listOf(3, 4),
-                ),
-            )
-        )
-    }
-}
+//@ExperimentalFoundationApi
+//@Preview(showBackground = true)
+//@Composable
+//fun DepartmentsScreenPreview() {
+//    MuseusTheme {
+//        DepartmentsScreen(
+//            listOf(
+//                UiDepartment(
+//                    id = 1,
+//                    name = "Medieval Art",
+//                    totalObjects = 2,
+//                    imageUrl = "",
+//                ),
+//                UiDepartment(
+//                    id = 2,
+//                    name = "Russian Art",
+//                    totalObjects = 2,
+//                    imageUrl = "",
+//                ),
+//                UiDepartment(
+//                    id = 3,
+//                    name = "Medieval Art Art Art Art Art",
+//                    totalObjects = 2,
+//                    imageUrl = "",
+//                ),
+//            )
+//        )
+//    }
+//}
 
 @Preview(showBackground = true)
 @Composable
 fun DepartmentCardPreview() {
     MuseusTheme {
         DepartmentCard(
-            Department(
+            UiDepartment(
                 id = 1,
                 name = "Medieval Art",
                 totalObjects = 2,
-                objectIds = listOf(1, 2),
+                imageUrl = "",
             ),
-            onClick =  {}
+            onClick = {}
         )
     }
 }

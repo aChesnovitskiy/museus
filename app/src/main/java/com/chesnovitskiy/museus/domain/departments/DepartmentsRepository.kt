@@ -1,4 +1,4 @@
-package com.chesnovitskiy.museus.domain.departments.repository
+package com.chesnovitskiy.museus.domain.departments
 
 import com.chesnovitskiy.museus.domain.departments.model.Department
 import kotlinx.coroutines.flow.Flow
