@@ -41,7 +41,7 @@ fun DepartmentsScreen(
     val state: DepartmentsViewState by stateFlowLifecycleAware.collectAsState(DepartmentsViewState())
 
     Scaffold { paddingValues ->
-        if (state.isUpdating && state.departments.isEmpty()) {
+        if (state.isLoading && state.departments.isEmpty()) {
             Box(
                 modifier = modifier
                     .padding(paddingValues)

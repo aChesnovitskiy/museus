@@ -16,10 +16,10 @@ class DepartmentsViewModel(departmentsUseCase: DepartmentsUseCase) :
     BaseViewModel<DepartmentsViewState>(DepartmentsViewState()) {
 
     init {
-        updateState { it.copy(isUpdating = true) }
+        updateState { it.copy(isLoading = true) }
         viewModelScope.launch {
             departmentsUseCase.updateDepartments()
-            updateState { it.copy(isUpdating = false) }
+            updateState { it.copy(isLoading = false) }
         }
         viewModelScope.launch {
             departmentsUseCase
@@ -48,5 +48,5 @@ class DepartmentsViewModelFactory(
 
 data class DepartmentsViewState(
     val departments: List<UiDepartment> = emptyList(),
-    val isUpdating: Boolean = false
+    val isLoading: Boolean = false
 ) : BaseViewState
